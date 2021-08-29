@@ -5,8 +5,14 @@ module.exports = {
     node: true,
     jest: true,
   },
-  plugins: ['jest'],
-  extends: ['eslint:recommended', 'prettier'],
+  plugins: ['jest', '@typescript-eslint'],
+  extends: [
+    'eslint:recommended',
+    'prettier',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+  ],
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'script',
