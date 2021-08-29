@@ -75,30 +75,6 @@ describe('runtime-env-cra', () => {
     );
   });
 
-  it('should throw error if NODE_ENV is production and env var is not found in shell', async () => {
-    process.env.NODE_ENV = 'production';
-
-    let config: string | undefined;
-    let error: Error | undefined;
-
-    try {
-      config = await generateConfig({
-        envConfig: './tests/utils/runtime-config.js',
-        envFile: './tests/utils/.env',
-      });
-    } catch (err) {
-      error = isError(err)
-        ? err
-        : new Error(
-            'Error doesn not follow formatting : ' + JSON.stringify(error),
-          );
-    }
-
-    expect(config).toBeUndefined();
-    expect(error).toBeDefined();
-    expect(error?.message).toEqual("Error getting 'TEST_VAR' from process.env");
-  });
-
   it('should parse the TEST_VAR value from the shell when NODE_ENV is not set to development', async () => {
     process.env.TEST_VAR = 'TEST_VALUE';
 

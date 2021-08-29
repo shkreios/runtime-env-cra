@@ -13,7 +13,8 @@
   },
   "homepage": "https://github.com/kHRISl33t/runtime-env-cra",
   "scripts": {
-    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "start": "npm run build && node ./lib/index.js",
     "tscov": "tscov --min-coverage 100",
     "tscov:d": "tscov --details",
     "docs": "typedoc --out docs ./src",
