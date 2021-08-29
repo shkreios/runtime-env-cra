@@ -26,5 +26,9 @@ article.md
 junit.xml
 
 
+# typescript output
+lib/
+
 # others
 docs/
+
