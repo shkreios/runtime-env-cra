@@ -1,9 +1,10 @@
-const generateConfig = require('../lib/generateConfig');
-const { promises: fsp } = require('fs');
+import generateConfig from '../src/generateConfig';
+import { promises as fsp } from 'fs';
+import { isError } from '../src/utils';
 
 describe('runtime-env-cra', () => {
   afterAll(async () => {
-    await fsp.unlink('./tests/utils/runtime-config.js').catch(() => { });
+    await fsp.unlink('./tests/utils/runtime-config.js').catch(() => {});
   });
 
   beforeEach(() => {
@@ -11,8 +12,8 @@ describe('runtime-env-cra', () => {
   });
 
   it('should throw an error if = sign is missing in the provided .env file', async () => {
-    let config;
-    let error;
+    let config: string | undefined;
+    let error: Error | undefined;
 
     try {
       config = await generateConfig({
@@ -20,12 +21,16 @@ describe('runtime-env-cra', () => {
         envFile: './tests/utils/.wrong-env',
       });
     } catch (err) {
-      error = err;
+      error = isError(err)
+        ? err
+        : new Error(
+            'Error doesn not follow formatting : ' + JSON.stringify(error),
+          );
     }
 
     expect(error).toBeDefined();
     expect(config).toBeUndefined();
-    expect(error.message).toEqual(
+    expect(error?.message).toEqual(
       'Could not generate runtime config. Check your .env format!',
     );
   });
@@ -47,8 +52,8 @@ describe('runtime-env-cra', () => {
   it('should throw an error if the provided .env not exists', async () => {
     process.env.NODE_ENV = 'development';
 
-    let config;
-    let error;
+    let config: string | undefined;
+    let error: Error | undefined;
 
     try {
       config = await generateConfig({
@@ -56,21 +61,25 @@ describe('runtime-env-cra', () => {
         envFile: './tests/utils/.notexistsenv',
       });
     } catch (err) {
-      error = err;
+      error = isError(err)
+        ? err
+        : new Error(
+            'Error doesn not follow formatting : ' + JSON.stringify(error),
+          );
     }
 
     expect(config).toBeUndefined();
     expect(error).toBeDefined();
-    expect(error.message).toEqual(
-      'ENOENT: no such file or directory, access \'./tests/utils/.notexistsenv\'',
+    expect(error?.message).toEqual(
+      "ENOENT: no such file or directory, access './tests/utils/.notexistsenv'",
     );
   });
 
   it('should throw error if NODE_ENV is production and env var is not found in shell', async () => {
     process.env.NODE_ENV = 'production';
 
-    let config;
-    let error;
+    let config: string | undefined;
+    let error: Error | undefined;
 
     try {
       config = await generateConfig({
@@ -78,19 +87,23 @@ describe('runtime-env-cra', () => {
         envFile: './tests/utils/.env',
       });
     } catch (err) {
-      error = err;
+      error = isError(err)
+        ? err
+        : new Error(
+            'Error doesn not follow formatting : ' + JSON.stringify(error),
+          );
     }
 
     expect(config).toBeUndefined();
     expect(error).toBeDefined();
-    expect(error.message).toEqual('Error getting \'TEST_VAR\' from process.env');
+    expect(error?.message).toEqual("Error getting 'TEST_VAR' from process.env");
   });
 
   it('should parse the TEST_VAR value from the shell when NODE_ENV is not set to development', async () => {
     process.env.TEST_VAR = 'TEST_VALUE';
 
-    let config;
-    let error;
+    let config: string | undefined;
+    let error: Error | undefined;
 
     try {
       config = await generateConfig({
@@ -98,7 +111,11 @@ describe('runtime-env-cra', () => {
         envFile: './tests/utils/.env',
       });
     } catch (err) {
-      error = err;
+      error = isError(err)
+        ? err
+        : new Error(
+            'Error doesn not follow formatting : ' + JSON.stringify(error),
+          );
     }
 
     expect(error).toBeUndefined();
