@@ -3,7 +3,7 @@
 import yargs from 'yargs';
 
 import generateConfig from './generateConfig';
-import { constants, isError } from './utils';
+import { constants, isError, isDevelopment } from './utils';
 
 const argv = yargs
   .option('config-name', {
@@ -15,7 +15,7 @@ const argv = yargs
   .option('env-file', {
     alias: 'ef',
     description: 'Location and name of your .env file.',
-    default: './.env',
+    default: isDevelopment ? './.env' : './process.env',
     type: 'string',
   })
   .help()

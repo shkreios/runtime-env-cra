@@ -43,14 +43,7 @@ async function generateConfig({
       if (equalSignIndex !== -1) {
         const key = line.slice(0, equalSignIndex);
         const value = line.slice(equalSignIndex + 1, lengthOfString);
-
-        if (process.env.NODE_ENV === recConstants.DEVELOPMENT) {
-          runtimeConfig[key] = value;
-        } else {
-          const env = process.env[key];
-          if (!env) throw new Error(`Error getting '${key}' from process.env`);
-          runtimeConfig[key] = env;
-        }
+        runtimeConfig[key] = value;
       }
     });
 
