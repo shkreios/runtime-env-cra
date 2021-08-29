@@ -13,10 +13,17 @@
   },
   "homepage": "https://github.com/kHRISl33t/runtime-env-cra",
   "scripts": {
+    "start": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/index.ts",
+    "tscov": "tscov --min-coverage 100",
+    "tscov:d": "tscov --details",
+    "docs": "typedoc --out docs ./src",
+    "clean:some": "rm -rf ./lib ./docs",
+    "clean:all": "rm -rf ./node_modules ./package-lock.json ./lib ./docs",
+    "build": "tsc -p .",
     "test": "jest --coverage --silent --config jest.config.js",
     "test:watch": "jest --watch",
-    "lint": "eslint \"{lib,test}/**/*.js\"",
-    "lint:fix": "eslint \"{lib,test}/**/*.js\" --fix",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "lint:fix": "eslint \"{src,test}/**/*.ts\" --fix",
     "packages:check": "npx npm-check-updates",
     "packages:upgrade": "npx npm-check-updates -u",
     "update-runtime-env-cra": "npx np"
@@ -41,12 +48,22 @@
     "package-lock.json"
   ],
   "devDependencies": {
+    "@liftr/tscov": "^2.0.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.6",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
+    "@typescript-eslint/parser": "^4.29.3",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jest": "^24.4.0",
     "eslint-plugin-prettier": "^3.4.1",
     "jest": "^27.0.6",
     "jest-junit": "^12.2.0",
-    "prettier": "^2.3.2"
+    "nodemon": "^2.0.12",
+    "prettier": "^2.3.2",
+    "ts-jest": "^27.0.5",
+    "ts-node": "^10.2.1",
+    "typedoc": "^0.21.8",
+    "typescript": "^4.4.2"
   }
 }
